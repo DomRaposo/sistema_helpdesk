@@ -13,17 +13,26 @@ class UserService
         $this->userRepository = $userRepository;
     }
 
-    public function getUsers()
+    public function getAllUsers()
     {
-        return $this->userRepository->getAll();
+        return $this->userRepository->All();
     }
 
-    public function register(array $data)
+    public function getUser($id)
     {
-        // Criptografa a senha antes de salvar
-        $data['password'] = Hash::make($data['password']);
+        return $this->userRepository->find($id);
+    }
 
-        // Chama o repositório para criar o usuário
+    public function createUser(array $data)
+    {
         return $this->userRepository->create($data);
+    }
+    public function updateUser($id, array $data)
+    {
+        return $this->userRepository->update($id, $data);
+    }
+    public function deleteUser($id)
+    {
+        return $this->userRepository->delete($id);
     }
 }

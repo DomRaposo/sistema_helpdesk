@@ -4,21 +4,29 @@ namespace App\Repositories;
 
 use App\Models\User;
 
-class UserRepository extends BaseRepository
+class UserRepository
 {
-    public function __construct()
+    public function all()
+{
+    return User::all();
+}
+    public function find($id)
     {
-        parent::__construct(new User());
+        return User::findOrFail($id);
     }
-
-    public function getAll($orderBy = 'asc')
-    {
-        return $this->orderBy('name', $orderBy)->get();
-    }
-
     public function create(array $data)
     {
-        // Cria e retorna o usuário no banco de dados
         return User::create($data);
     }
+    public function update($id, array $data)
+    {
+        $user = User::findOrFail($id);
+        $user->update($data);
+        return $user;
+    }
+    public function delete($id)
+    {
+        return User::destroy($id);
+    }
+
 }

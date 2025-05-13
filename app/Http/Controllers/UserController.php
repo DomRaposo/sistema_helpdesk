@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Http\Request;
+
 
 use App\Services\UserService;
 
@@ -14,27 +16,28 @@ class UserController extends Controller
         $this->userService = $userService;
     }
 
-    public function showUsers()
+    public function index()
     {
-        //$users = $this->userService->getUsers();
-        $users = User::getAll();
-        return response()->json($users);
+        return response()->json($this->userService->getAllUsers());
     }
 
-    public function register(Request $request)
+    public function store(Request $request)
     {
-        // Valida os dados recebidos da requisição
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6',
-            'tipo' => 'required|in:cliente,atendente,admin',
-        ]);
+        $user = $this->userService->createUser($request->all());
+    }
+    public function show($id)
+    {
+        return response()->json($this->userService->getUser($id));
+    }
 
-        // Chama o service para criar o usuário
-        $user = $this->userService->register($validated);
-
-        // Retorna o usuário criado como resposta
-        return response()->json($user, 201);
+    public function update(Request $request,$id)
+    {
+        $user = $this->userService->updateUser($id, $request->all());
+        return response()->json($user);
+    }
+    public function destroy($id)
+    {
+        $this->userService->deleteUser($id);
+        return response()->json(['message'=> 'Deleted']);
     }
 }

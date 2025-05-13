@@ -5,5 +5,5 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::get('users',[UserController::class,'showUsers']);
-Route::post('users', [UserController::class, 'register']);
+Route::get('users',[UserController::class,'show']);
+Route::post('users', [UserController::class, 'store']);
