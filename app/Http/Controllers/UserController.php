@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
+use App\Models\User;
 
 
 use App\Services\UserService;
@@ -24,9 +25,11 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $user = $this->userService->createUser($request->all());
+        return response()->json(['message'=> 'Create with sucess' , 'user' => $user],201);
     }
     public function show($id)
     {
+        $users = User::All();
         return response()->json($this->userService->getUser($id));
     }
 
