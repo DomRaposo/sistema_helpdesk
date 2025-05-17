@@ -1,66 +1,44 @@
 <?php
+
 namespace App\Repositories;
 
-class ChamadoRepository{
+use App\Models\Chamado;
+
+class ChamadoRepository
+{
+    public function getAll()
+    {
+        return Chamado::all();
+    }
+
+    public function getByStatus(string $status)
+    {
+        return Chamado::where('status', strtoupper($status))->get();
+    }
+
+    public function find(int $id): ?Chamado
+    {
+        return Chamado::find($id);
+    }
+
+    public function create(array $data): Chamado
+    {
+        return Chamado::create($data);
+    }
+
+    public function update(Chamado $chamado, array $data): Chamado
+    {
+        $chamado->update($data);
+        return $chamado;
+    }
+
+    public function delete(Chamado $chamado): bool
+    {
+        return $chamado->delete();
+    }
+
     public function countByStatus(string $status): int
     {
-        return Chamado::where('status', $status)->count();
-    }
-
-    public function getAll(string $status = null)
-    {
-        $query = Chamado::query();
-
-        if ($status) {
-            $query->where('status', strtolower($status));
-        }
-
-        return $query->get();
-    }
-
-    public function getStats(): array
-    {
-        $abertos = $this->postRepository->countByStatus('aberto');
-        $emAtendimento = $this->postRepository->countByStatus('em_atendimento');
-        $encerrados = $this->postRepository->countByStatus('encerrado');
-        $total = $abertos + $emAtendimento + $encerrados;
-
-        return [
-            'ABERTO' => [
-                'stats' => ['total' => $abertos],
-                'border_color' => $this->getBorderColorByStatus('ABERTO'),
-                'title' => 'Abertos'
-            ],
-            'EM_ATENDIMENTO' => [
-                'stats' => ['total' => $emAtendimento],
-                'border_color' => $this->getBorderColorByStatus('EM_ATENDIMENTO'),
-                'title' => 'Em Atendimento'
-            ],
-            'ENCERRADO' => [
-                'stats' => ['total' => $encerrados],
-                'border_color' => $this->getBorderColorByStatus('ENCERRADO'),
-                'title' => 'Encerrados'
-            ],
-            'TOTAL' => [
-                'stats' => ['total' => $total],
-                'border_color' => $this->getBorderColorByStatus('TOTAL'),
-                'title' => 'Total'
-            ]
-        ];
-    }
-    private function getBorderColorByStatus(string $status): string
-    {
-        switch ($status) {
-            case 'ABERTO':
-                return 'border-blue-600';
-            case 'EM_ATENDIMENTO':
-                return 'border-yellow-500';
-            case 'ENCERRADO':
-                return 'border-red-600';
-            case 'total':
-                return 'border-green-600';
-            default:
-                return 'border-gray-500';
-        }
+        return Chamado::where('status', strtoupper($status))->count();
     }
 }

@@ -1,57 +1,48 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Http\Requests\ChamadoRequest;
-use App\Repositories\ChamadoRepository;
 use App\Services\ChamadoService;
 use Illuminate\Http\JsonResponse;
-
-
 use Illuminate\Http\Request;
 
 class ChamadoController extends Controller
 {
-    private ChamadoRepository $chamadoRepository;
-    protected $chamadoservice;
+    protected ChamadoService $chamadoService;
 
     public function __construct(ChamadoService $chamadoService)
     {
         $this->chamadoService = $chamadoService;
     }
 
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $chamados = $this->chamadoRepository->list();
-        return response()->json($chamados);
+        return $this->chamadoService->index($request->query('status'));
     }
 
     public function store(ChamadoRequest $request): JsonResponse
     {
-        $chamado = $this->chamadoservice->store($request->validated());
-        return response()->json($chamado, 201);
+        return $this->chamadoService->store($request->validated());
     }
 
     public function show(int $id): JsonResponse
     {
-        $chamado = $this->chamadoservice->show($id);
-        return response()->json($chamado);
+        return $this->chamadoService->show($id);
     }
 
     public function update(ChamadoRequest $request, int $id): JsonResponse
     {
-        $chamado = $this->chamadoservice->update($id, $request->validated());
-        return response()->json($chamado);
+        return $this->chamadoService->update($id, $request->validated());
     }
 
     public function destroy(int $id): JsonResponse
     {
-        $this->chamadoservice->destroy($id);
-        return response()->json(null, 204);
+        return $this->chamadoService->destroy($id);
     }
 
     public function stats(): JsonResponse
     {
-        $stats = $this->chamadoservice->getStats();
-        return response()->json($stats);
+        return $this->chamadoService->stats();
     }
 }

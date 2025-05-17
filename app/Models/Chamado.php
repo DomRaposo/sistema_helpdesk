@@ -26,7 +26,7 @@ class Chamado extends Model
         'assunto' => AssuntoChamadoEnum::class,
     ];
 
-    // Relacionamento com usuário (criador do chamado)
+
     public function usuario()
     {
         return $this->belongsTo(User::class, 'usuario_id');

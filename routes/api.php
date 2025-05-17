@@ -15,7 +15,11 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 Route::get('users/{id}',[UserController::class,'show']);
 
-//Rotas chamados
-Route::apiResource('chamados', ChamadoController::class);
+
+Route::get('/chamados', [ChamadoController::class, 'index'])->name('chamados.index');
+Route::post('chamados', [ChamadoController::class, 'store'])->name('chamados.store');
+Route::get('chamados/{id}', [ChamadoController::class, 'show'])->name('chamados.show');
+Route::put('chamados/{id}', [ChamadoController::class, 'update'])->name('chamados.update');
+Route::delete('chamados/{id}', [ChamadoController::class, 'destroy'])->name('chamados.destroy');
 Route::get('chamados-stats', [ChamadoController::class, 'stats']);
 
