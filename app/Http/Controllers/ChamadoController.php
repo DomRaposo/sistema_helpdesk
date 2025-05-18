@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Services\ChamadoService;
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use App\Http\Requests\ChamadoRequest;
+use App\Http\Requests\UpdateChamadoRequest;
 
 class ChamadoController extends Controller
 {
@@ -14,30 +16,21 @@ class ChamadoController extends Controller
         $this->service = $service;
     }
 
-
-    public function index()
+    public function index(): JsonResponse
     {
         $chamados = $this->service->index();
         return response()->json($chamados);
     }
 
-
-    public function store(Request $request)
+    public function store(ChamadoRequest $request): JsonResponse
     {
-
-        $validated = $request->validate([
-            'titulo' => 'required|string|max:255',
-            'descricao' => 'nullable|string',
-            'status' => 'required|string|in:ABERTO,EM_ATENDIMENTO,ENCERRADO',
-        ]);
-
+        $validated = $request->validated();
         $result = $this->service->store($validated);
 
         return response()->json($result, 201);
     }
 
-
-    public function show($id)
+    public function show($id): JsonResponse
     {
         $chamado = $this->service->show($id);
 
@@ -48,14 +41,9 @@ class ChamadoController extends Controller
         return response()->json($chamado);
     }
 
-    public function update(Request $request, $id)
+    public function update(ChamadoRequest $request, $id): JsonResponse
     {
-        $validated = $request->validate([
-            'titulo' => 'sometimes|required|string|max:255',
-            'descricao' => 'sometimes|nullable|string',
-            'status' => 'sometimes|required|string|in:ABERTO,EM_ATENDIMENTO,ENCERRADO',
-        ]);
-
+        $validated = $request->validated();
         $result = $this->service->update($id, $validated);
 
         if (!$result) {
@@ -65,7 +53,7 @@ class ChamadoController extends Controller
         return response()->json($result);
     }
 
-    public function destroy($id)
+    public function destroy($id): JsonResponse
     {
         $deleted = $this->service->destroy($id);
 
@@ -76,11 +64,9 @@ class ChamadoController extends Controller
         return response()->json(['message' => 'Chamado deletado com sucesso']);
     }
 
-
-    public function stats()
+    public function stats(): JsonResponse
     {
-        $stats = $this->service->stats();
-
+        $stats = $this->service->getStats();
         return response()->json($stats);
     }
 }

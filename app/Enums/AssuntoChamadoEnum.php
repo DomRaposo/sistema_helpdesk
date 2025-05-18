@@ -2,18 +2,14 @@
 
 namespace App\Enums;
 
-class AssuntoChamadoEnum
+enum AssuntoChamadoEnum: string
 {
-    public const SUPORTE = 'suporte';
-    public const FINANCEIRO = 'financeiro';
-    public const TÉCNICO = 'técnico';
+    case SUPORTE = 'suporte';
+    case FINANCEIRO = 'financeiro';
+    case TECNICO = 'tecnico';
 
     public static function values(): array
     {
-        return [
-            self::SUPORTE,
-            self::FINANCEIRO,
-            self::TÉCNICO,
-        ];
+        return array_map(fn($case) => $case->value, self::cases());
     }
 }

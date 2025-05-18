@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Services;
-
+use App\Enums\StatusChamadoEnum;
+use App\Models\Chamado;
 use App\Repositories\ChamadoRepository;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,9 +17,17 @@ class ChamadoService
 
     public function index()
     {
-        $chamados = $this->repository->getAll();
-
+        return $this->repository->getAll()
+            ->map(fn($c) => [
+                'id'        => $c->id,
+                'titulo'    => $c->titulo,
+                'descricao' => $c->descricao,
+                'status'    => $c->status->value,
+                'assunto'   => $c->assunto->value,
+            ]);
     }
+
+
 
     public function store($data)
     {
@@ -47,6 +56,7 @@ class ChamadoService
         ];
     }
 
+
     public function update($id, $data)
     {
         $chamado = $this->repository->find($id);
@@ -65,57 +75,64 @@ class ChamadoService
         return $chamado ? $this->repository->delete($chamado) : false;
     }
 
-    public function getStats(): array
+
+    private function getStatusStats(string $status): array
     {
-        $abertoStats = $this->getStatusStats('ABERTO');
-        $emAtendimentoStats = $this->getStatusStats('EM_ATENDIMENTO');
-        $encerradoStats = $this->getStatusStats('ENCERRADO');
-
-        $total = $abertoStats + $emAtendimentoStats + $encerradoStats;
-
         return [
-            'aberto' => [
-                'count' => $abertoStats,
-                'border_color' => $this->getBorderColorByStatus('ABERTO'),
-                'title' => 'Aberto',
-            ],
-            'em_atendimento' => [
-                'count' => $emAtendimentoStats,
-                'border_color' => $this->getBorderColorByStatus('EM_ATENDIMENTO'),
-                'title' => 'Em Atendimento',
-            ],
-            'encerrado' => [
-                'count' => $encerradoStats,
-                'border_color' => $this->getBorderColorByStatus('ENCERRADO'),
-                'title' => 'Encerrado',
-            ],
-            'total' => [
-                'count' => $total,
-                'border_color' => $this->getBorderColorByStatus('TOTAL'),
-                'title' => 'Total',
-            ],
-        ];
+            'count' => $this->repository->countByStatus($status)
+            ];
+
     }
 
-    private function getStatusStats(string $status): int
+    private function getBorderColorByStatus($status)
     {
-        return $this->repository->countByStatus($status);
-    }
-
-    private function getBorderColorByStatus(string $status): string
-    {
-        switch (strtoupper($status)) {
-            case 'ABERTO':
+        switch ($status) {
+            case 'aberto':
                 return 'border-blue-600';
-            case 'EM_ATENDIMENTO':
+            case 'em_atendimento':
                 return 'border-yellow-500';
-            case 'ENCERRADO':
+            case 'encerrado':
                 return 'border-red-600';
-            case 'TOTAL':
+            case 'total':
                 return 'border-green-600';
             default:
                 return 'border-gray-500';
         }
+    }
+
+    public function getStats(): array
+    {
+        $abertoStats = $this->getStatusStats('aberto');
+        $emAtendimentoStats = $this->getStatusStats('em_atendimento');
+        $encerradoStats = $this->getStatusStats('encerrado');
+
+        $totalCount = $abertoStats['count'] + $emAtendimentoStats['count'] + $encerradoStats['count'];
+
+        return [
+            'aberto' => [
+                'stats' => $abertoStats,
+                'border_color' => $this->getBorderColorByStatus('aberto'),
+                'title' => 'Aberto',
+            ],
+            'em_atendimento' => [
+                'stats' => $emAtendimentoStats,
+                'border_color' => $this->getBorderColorByStatus('em_atendimento'),
+                'title' => 'Em Atendimento',
+            ],
+            'encerrado' => [
+                'stats' => $encerradoStats,
+                'border_color' => $this->getBorderColorByStatus('encerrado'),
+                'title' => 'Encerrado',
+            ],
+            'total' => [
+                'stats' => [
+                    'count' => $totalCount,
+
+                ],
+                'border_color' => $this->getBorderColorByStatus('total'),
+                'title' => 'Total',
+            ],
+        ];
     }
 
 }
