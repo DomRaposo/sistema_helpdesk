@@ -2,47 +2,85 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ChamadoRequest;
 use App\Services\ChamadoService;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ChamadoController extends Controller
 {
-    protected ChamadoService $chamadoService;
+    protected $service;
 
-    public function __construct(ChamadoService $chamadoService)
+    public function __construct(ChamadoService $service)
     {
-        $this->chamadoService = $chamadoService;
+        $this->service = $service;
     }
 
-    public function index(Request $request): JsonResponse
+
+    public function index()
     {
-        return $this->chamadoService->index($request->query('status'));
+        $chamados = $this->service->index();
+        return response()->json($chamados);
     }
 
-    public function store(ChamadoRequest $request): JsonResponse
+
+    public function store(Request $request)
     {
-        return $this->chamadoService->store($request->validated());
+
+        $validated = $request->validate([
+            'titulo' => 'required|string|max:255',
+            'descricao' => 'nullable|string',
+            'status' => 'required|string|in:ABERTO,EM_ATENDIMENTO,ENCERRADO',
+        ]);
+
+        $result = $this->service->store($validated);
+
+        return response()->json($result, 201);
     }
 
-    public function show(int $id): JsonResponse
+
+    public function show($id)
     {
-        return $this->chamadoService->show($id);
+        $chamado = $this->service->show($id);
+
+        if (!$chamado) {
+            return response()->json(['message' => 'Chamado não encontrado'], 404);
+        }
+
+        return response()->json($chamado);
     }
 
-    public function update(ChamadoRequest $request, int $id): JsonResponse
+    public function update(Request $request, $id)
     {
-        return $this->chamadoService->update($id, $request->validated());
+        $validated = $request->validate([
+            'titulo' => 'sometimes|required|string|max:255',
+            'descricao' => 'sometimes|nullable|string',
+            'status' => 'sometimes|required|string|in:ABERTO,EM_ATENDIMENTO,ENCERRADO',
+        ]);
+
+        $result = $this->service->update($id, $validated);
+
+        if (!$result) {
+            return response()->json(['message' => 'Chamado não encontrado ou não atualizado'], 404);
+        }
+
+        return response()->json($result);
     }
 
-    public function destroy(int $id): JsonResponse
+    public function destroy($id)
     {
-        return $this->chamadoService->destroy($id);
+        $deleted = $this->service->destroy($id);
+
+        if (!$deleted) {
+            return response()->json(['message' => 'Chamado não encontrado'], 404);
+        }
+
+        return response()->json(['message' => 'Chamado deletado com sucesso']);
     }
 
-    public function stats(): JsonResponse
+
+    public function stats()
     {
-        return $this->chamadoService->stats();
+        $stats = $this->service->stats();
+
+        return response()->json($stats);
     }
 }

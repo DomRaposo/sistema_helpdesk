@@ -6,7 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TokenController;
 use App\Http\Controllers\ChamadoController;
 
-//Rotas Users
+
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('users', [UserController::class, 'store']);
 Route::middleware('auth:sanctum')->group(function () {
@@ -14,12 +14,17 @@ Route::middleware('auth:sanctum')->group(function () {
 
 });
 Route::get('users/{id}',[UserController::class,'show']);
+Route::get('users', [UserController::class, 'index']);
 
 
-Route::get('/chamados', [ChamadoController::class, 'index'])->name('chamados.index');
-Route::post('chamados', [ChamadoController::class, 'store'])->name('chamados.store');
-Route::get('chamados/{id}', [ChamadoController::class, 'show'])->name('chamados.show');
-Route::put('chamados/{id}', [ChamadoController::class, 'update'])->name('chamados.update');
-Route::delete('chamados/{id}', [ChamadoController::class, 'destroy'])->name('chamados.destroy');
-Route::get('chamados-stats', [ChamadoController::class, 'stats']);
+
+
+Route::prefix('chamados')->group(function () {
+    Route::get('/', [ChamadoController::class, 'index']);
+    Route::post('/', [ChamadoController::class, 'store']);
+    Route::get('/{id}', [ChamadoController::class, 'show']);
+    Route::put('/{id}', [ChamadoController::class, 'update']);
+    Route::delete('/{id}', [ChamadoController::class, 'destroy']);
+    Route::get('/stats', [ChamadoController::class, 'stats']);
+});
 

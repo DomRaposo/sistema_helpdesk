@@ -2,109 +2,120 @@
 
 namespace App\Services;
 
-use App\Models\Chamado;
 use App\Repositories\ChamadoRepository;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
 class ChamadoService
 {
-    protected ChamadoRepository $repository;
+    protected $repository;
 
     public function __construct(ChamadoRepository $repository)
     {
         $this->repository = $repository;
     }
 
-    public function index(?string $status): JsonResponse
+    public function index()
     {
-        $chamados = $status
-            ? $this->repository->getByStatus($status)
-            : $this->repository->getAll();
+        $chamados = $this->repository->getAll();
 
-        return response()->json($chamados);
     }
 
-    public function store(array $data): JsonResponse
+    public function store($data)
     {
-        $data['usuario_id'] = Auth::id();
+        $data['user_id'] = Auth::id();
         $chamado = $this->repository->create($data);
 
-        return response()->json($chamado, 201);
+        return [
+            'id' => $chamado->id,
+            'titulo' => $chamado->titulo,
+            'message' => 'Chamado criado com sucesso'
+        ];
     }
 
-    public function show(int $id): JsonResponse
+    public function show($id)
     {
         $chamado = $this->repository->find($id);
 
-        return $chamado
-            ? response()->json($chamado)
-            : response()->json(['message' => 'Chamado não encontrado'], 404);
+        if (!$chamado) return null;
+
+        return [
+            'id' => $chamado->id,
+            'titulo' => $chamado->titulo,
+            'descricao' => $chamado->descricao,
+            'status' => $chamado->status,
+            'border_color' => $this->getBorderColorByStatus($chamado->status),
+        ];
     }
 
-    public function update(int $id, array $data): JsonResponse
+    public function update($id, $data)
     {
         $chamado = $this->repository->find($id);
 
-        if (!$chamado) {
-            return response()->json(['message' => 'Chamado não encontrado'], 404);
-        }
+        if (!$chamado || !$this->repository->update($chamado, $data)) return null;
 
-        $updated = $this->repository->update($chamado, $data);
-        return response()->json($updated);
+        return [
+            'id' => $chamado->id,
+            'message' => 'Chamado atualizado com sucesso'
+        ];
     }
 
-    public function destroy(int $id): JsonResponse
+    public function destroy($id)
     {
         $chamado = $this->repository->find($id);
-
-        if (!$chamado) {
-            return response()->json(['message' => 'Chamado não encontrado'], 404);
-        }
-
-        $this->repository->delete($chamado);
-        return response()->json(null, 204);
+        return $chamado ? $this->repository->delete($chamado) : false;
     }
 
-    public function stats(): JsonResponse
+    public function getStats(): array
     {
-        $abertos = $this->repository->countByStatus('ABERTO');
-        $emAtendimento = $this->repository->countByStatus('EM_ATENDIMENTO');
-        $encerrados = $this->repository->countByStatus('ENCERRADO');
-        $total = $abertos + $emAtendimento + $encerrados;
+        $abertoStats = $this->getStatusStats('ABERTO');
+        $emAtendimentoStats = $this->getStatusStats('EM_ATENDIMENTO');
+        $encerradoStats = $this->getStatusStats('ENCERRADO');
 
-        return response()->json([
-            'ABERTO' => [
-                'stats' => ['total' => $abertos],
+        $total = $abertoStats + $emAtendimentoStats + $encerradoStats;
+
+        return [
+            'aberto' => [
+                'count' => $abertoStats,
                 'border_color' => $this->getBorderColorByStatus('ABERTO'),
-                'title' => 'Abertos'
+                'title' => 'Aberto',
             ],
-            'EM_ATENDIMENTO' => [
-                'stats' => ['total' => $emAtendimento],
+            'em_atendimento' => [
+                'count' => $emAtendimentoStats,
                 'border_color' => $this->getBorderColorByStatus('EM_ATENDIMENTO'),
-                'title' => 'Em Atendimento'
+                'title' => 'Em Atendimento',
             ],
-            'ENCERRADO' => [
-                'stats' => ['total' => $encerrados],
+            'encerrado' => [
+                'count' => $encerradoStats,
                 'border_color' => $this->getBorderColorByStatus('ENCERRADO'),
-                'title' => 'Encerrados'
+                'title' => 'Encerrado',
             ],
-            'TOTAL' => [
-                'stats' => ['total' => $total],
+            'total' => [
+                'count' => $total,
                 'border_color' => $this->getBorderColorByStatus('TOTAL'),
-                'title' => 'Total'
-            ]
-        ]);
+                'title' => 'Total',
+            ],
+        ];
+    }
+
+    private function getStatusStats(string $status): int
+    {
+        return $this->repository->countByStatus($status);
     }
 
     private function getBorderColorByStatus(string $status): string
     {
-        return match (strtoupper($status)) {
-            'ABERTO' => 'border-blue-600',
-            'EM_ATENDIMENTO' => 'border-yellow-500',
-            'ENCERRADO' => 'border-red-600',
-            'TOTAL' => 'border-green-600',
-            default => 'border-gray-500',
-        };
+        switch (strtoupper($status)) {
+            case 'ABERTO':
+                return 'border-blue-600';
+            case 'EM_ATENDIMENTO':
+                return 'border-yellow-500';
+            case 'ENCERRADO':
+                return 'border-red-600';
+            case 'TOTAL':
+                return 'border-green-600';
+            default:
+                return 'border-gray-500';
+        }
     }
+
 }

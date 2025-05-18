@@ -11,33 +11,32 @@ class ChamadoRepository
         return Chamado::all();
     }
 
-    public function getByStatus(string $status)
+    public function getByStatus($status)
     {
         return Chamado::where('status', strtoupper($status))->get();
     }
 
-    public function find(int $id): ?Chamado
+    public function find($id)
     {
         return Chamado::find($id);
     }
 
-    public function create(array $data): Chamado
+    public function create($data)
     {
         return Chamado::create($data);
     }
 
-    public function update(Chamado $chamado, array $data): Chamado
+    public function update($chamado, $data)
     {
-        $chamado->update($data);
-        return $chamado;
+        return $chamado->update($data);
     }
 
-    public function delete(Chamado $chamado): bool
+    public function delete($chamado)
     {
         return $chamado->delete();
     }
 
-    public function countByStatus(string $status): int
+    public function countByStatus($status)
     {
         return Chamado::where('status', strtoupper($status))->count();
     }
