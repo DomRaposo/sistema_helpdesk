@@ -13,7 +13,7 @@ class ChamadoRepository
 
     public function getByStatus($status)
     {
-        return Chamado::where('status', strtoupper($status))->get();
+        return Chamado::where('status', $status)->get();
     }
 
     public function find($id)
@@ -38,6 +38,6 @@ class ChamadoRepository
 
     public function countByStatus($status)
     {
-        return Chamado::where('status', strtoupper($status))->count();
+        return Chamado::where('status', $status)->count();
     }
 }

@@ -15,7 +15,11 @@ class ChamadoController extends Controller
     {
         $this->service = $service;
     }
-
+    public function stats(): JsonResponse
+    {
+        $stats = $this->service->getStats();
+        return response()->json($stats);
+    }
     public function index(): JsonResponse
     {
         $chamados = $this->service->index();
@@ -64,9 +68,5 @@ class ChamadoController extends Controller
         return response()->json(['message' => 'Chamado deletado com sucesso']);
     }
 
-    public function stats(): JsonResponse
-    {
-        $stats = $this->service->getStats();
-        return response()->json($stats);
-    }
+
 }

@@ -80,13 +80,12 @@ class ChamadoService
     {
         return [
             'count' => $this->repository->countByStatus($status)
-            ];
-
+        ];
     }
 
-    private function getBorderColorByStatus($status)
+    private function getBorderColorByStatus(string $status): string
     {
-        switch ($status) {
+        switch (strtolower($status)) {
             case 'aberto':
                 return 'border-blue-600';
             case 'em_atendimento':
@@ -102,9 +101,9 @@ class ChamadoService
 
     public function getStats(): array
     {
-        $abertoStats = $this->getStatusStats('aberto');
-        $emAtendimentoStats = $this->getStatusStats('em_atendimento');
-        $encerradoStats = $this->getStatusStats('encerrado');
+        $abertoStats = $this->getStatusStats('ABERTO');
+        $emAtendimentoStats = $this->getStatusStats('EM_ATENDIMENTO');
+        $encerradoStats = $this->getStatusStats('ENCERRADO');
 
         $totalCount = $abertoStats['count'] + $emAtendimentoStats['count'] + $encerradoStats['count'];
 
@@ -112,27 +111,24 @@ class ChamadoService
             'aberto' => [
                 'stats' => $abertoStats,
                 'border_color' => $this->getBorderColorByStatus('aberto'),
-                'title' => 'Aberto',
+                'title' => 'Aberto'
             ],
             'em_atendimento' => [
                 'stats' => $emAtendimentoStats,
                 'border_color' => $this->getBorderColorByStatus('em_atendimento'),
-                'title' => 'Em Atendimento',
+                'title' => 'Em Atendimento'
             ],
             'encerrado' => [
                 'stats' => $encerradoStats,
                 'border_color' => $this->getBorderColorByStatus('encerrado'),
-                'title' => 'Encerrado',
+                'title' => 'Encerrado'
             ],
             'total' => [
                 'stats' => [
-                    'count' => $totalCount,
-
+                    'count' => $totalCount
                 ],
                 'border_color' => $this->getBorderColorByStatus('total'),
-                'title' => 'Total',
-            ],
+                'title' => 'Total'
+            ]
         ];
-    }
-
-}
+    }}
