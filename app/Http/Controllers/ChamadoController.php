@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Services\ChamadoService;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\ChamadoRequest;
 use App\Http\Requests\UpdateChamadoRequest;
+use Illuminate\Http\Request;
 
 class ChamadoController extends Controller
 {
@@ -66,6 +68,26 @@ class ChamadoController extends Controller
         }
 
         return response()->json(['message' => 'Chamado deletado com sucesso']);
+    }
+
+
+
+
+    public function gerarPDF(Request $request)
+    {
+        $status = $request->query('status');
+
+        $dados = $this->service->gerarPDF($status);
+        $pdf = Pdf::loadView('relatorios.chamados', ['chamados' => $dados]);
+        return $pdf->stream('relatorio_chamados.pdf');
+
+
+    }
+
+
+    public function filter($status){
+        $result = $this->service->filterByStatus($status);
+        return response()->json($result);
     }
 
 

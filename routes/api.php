@@ -27,5 +27,9 @@ Route::prefix('chamados')->group(function () {
     Route::put('/{id}', [ChamadoController::class, 'update']);
     Route::delete('/{id}', [ChamadoController::class, 'destroy']);
 
+
 });
+
+Route::get('relatorio', [ChamadoController::class, 'gerarPDF']);
+Route::get('/{status}', [ChamadoController::class, 'filter']);
 
