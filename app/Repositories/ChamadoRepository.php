@@ -40,4 +40,10 @@ class ChamadoRepository
     {
         return Chamado::where('status', $status)->count();
     }
+
+
+    public function filterByStatus($status){
+        return Chamado::where('status', $status)->get();
+    }
+
 }

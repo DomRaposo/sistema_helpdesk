@@ -24,9 +24,33 @@ class ChamadoService
                 'descricao' => $c->descricao,
                 'status'    => $c->status->value,
                 'assunto'   => $c->assunto->value,
+                'created_at' => $c->created_at,
+                'updated_at' => $c->updated_at,
             ]);
     }
 
+    public function gerarPDF($status = null)
+    {
+        $chamados = $status
+            ? $this->filterByStatus($status)
+            : $this->repository->getAll();
+
+        return $chamados->map(fn($c) => [
+            'id'                => $c->id,
+            'titulo'            => $c->titulo,
+            'descricao'         => $c->descricao,
+            'status'            => $c->status->value,
+            'assunto'           => $c->assunto->value,
+            'data_criacao'      => $c->created_at->format('d/m/Y'),
+            'data_encerramento' => $c->updated_at->format('d/m/Y'),
+        ]);
+    }
+
+
+
+    public function filterByStatus($status){
+        return $this->repository->filterByStatus($status);
+    }
 
 
     public function store($data)
