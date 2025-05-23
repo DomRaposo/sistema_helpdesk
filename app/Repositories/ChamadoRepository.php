@@ -21,7 +21,7 @@ class ChamadoRepository
         return Chamado::find($id);
     }
 
-    public function create($data)
+    public function create(array $data)
     {
         return Chamado::create($data);
     }

@@ -16,9 +16,10 @@ class Chamado extends Model
     protected $fillable = [
         'titulo',
         'descricao',
-        'status',
         'assunto',
-        'usuario_id',
+        'status',
+         'user_id',
+        'data_abertura',
     ];
 
     protected $casts = [
@@ -29,6 +30,6 @@ class Chamado extends Model
 
     public function usuario()
     {
-        return $this->belongsTo(User::class, 'usuario_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

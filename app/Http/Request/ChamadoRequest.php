@@ -1,6 +1,6 @@
 <?php
 
-// app/Http/Requests/ChamadoRequest.php
+
 
 namespace App\Http\Requests;
 
@@ -22,7 +22,7 @@ return [
 'descricao' => 'required|string',
 'assunto' => 'required|in:' . implode(',', AssuntoChamadoEnum::values()),
 'status' => 'required|in:' . implode(',', StatusChamadoEnum::values()),
-'user_id' => 'required|exists:users,id',
+'user_id' => 'required|int|exists:users,id',
 'data_abertura' => 'required|date',
 ];
 }

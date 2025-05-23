@@ -6,7 +6,6 @@ use App\Services\ChamadoService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\ChamadoRequest;
-use App\Http\Requests\UpdateChamadoRequest;
 use Illuminate\Http\Request;
 
 class ChamadoController extends Controller
@@ -28,13 +27,20 @@ class ChamadoController extends Controller
         return response()->json($chamados);
     }
 
-    public function store(ChamadoRequest $request): JsonResponse
+    public function store(Request $request): JsonResponse
     {
-        $validated = $request->validated();
-        $result = $this->service->store($validated);
+        $data = $request->all();
+        $data['data_abertura'] = now()->toDateString();
+
+        if ($request->hasFile('imagem')) {
+            $data['imagem'] = $request->file('imagem')->store('chamados', 'public');
+        }
+
+        $result = $this->service->store($data);
 
         return response()->json($result, 201);
     }
+
 
     public function show($id): JsonResponse
     {
@@ -47,17 +53,18 @@ class ChamadoController extends Controller
         return response()->json($chamado);
     }
 
-    public function update(ChamadoRequest $request, $id): JsonResponse
+    public function updateStatus($id, Request $request)
     {
-        $validated = $request->validated();
-        $result = $this->service->update($id, $validated);
+        $status = $request->input('status');
 
-        if (!$result) {
-            return response()->json(['message' => 'Chamado não encontrado ou não atualizado'], 404);
-        }
+        $chamado = $this->service->updateStatus($id, $status);
 
-        return response()->json($result);
+        return response()->json([
+            'message' => 'Status atualizado com sucesso',
+            'data' => $chamado,
+        ]);
     }
+
 
     public function destroy($id): JsonResponse
     {

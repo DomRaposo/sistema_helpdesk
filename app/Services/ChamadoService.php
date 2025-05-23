@@ -6,6 +6,8 @@ use App\Models\Chamado;
 use App\Repositories\ChamadoRepository;
 use Illuminate\Support\Facades\Auth;
 
+use Carbon\Carbon;
+
 class ChamadoService
 {
     protected $repository;
@@ -47,15 +49,21 @@ class ChamadoService
     }
 
 
-
     public function filterByStatus($status){
         return $this->repository->filterByStatus($status);
     }
 
 
+
+
     public function store($data)
     {
-        $data['user_id'] = Auth::id();
+
+        $data['data_abertura'] = Carbon::now()->toDateString();
+
+
+
+
         $chamado = $this->repository->create($data);
 
         return [
@@ -64,6 +72,8 @@ class ChamadoService
             'message' => 'Chamado criado com sucesso'
         ];
     }
+
+
 
     public function show($id)
     {
@@ -81,17 +91,17 @@ class ChamadoService
     }
 
 
-    public function update($id, $data)
+    public function updateStatus($id, $status)
     {
         $chamado = $this->repository->find($id);
 
-        if (!$chamado || !$this->repository->update($chamado, $data)) return null;
+        if (!$chamado) {
+            throw new \Exception('Chamado não encontrado');
+        }
 
-        return [
-            'id' => $chamado->id,
-            'message' => 'Chamado atualizado com sucesso'
-        ];
+        return $this->repository->update($chamado, ['status' => $status]);
     }
+
 
     public function destroy($id)
     {
