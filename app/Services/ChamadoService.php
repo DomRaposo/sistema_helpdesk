@@ -58,7 +58,7 @@ class ChamadoService
 
     public function store($data)
     {
-
+        $data['user_id'] = auth()->id();
         $data['data_abertura'] = Carbon::now()->toDateString();
 
 
