@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RespostaChamadoRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Services\RespostaService;
+
 
 class RespostaController extends Controller
 {
@@ -16,7 +18,7 @@ class RespostaController extends Controller
 
     }
 
-    public function store(Request $request)
+    public function store(RespostaChamadoRequest $request)
     {
 
         $data = $request->all();

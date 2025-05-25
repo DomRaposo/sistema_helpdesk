@@ -8,6 +8,7 @@ use Illuminate\Http\JsonResponse;
 use App\Http\Requests\ChamadoRequest;
 use Illuminate\Http\Request;
 
+
 class ChamadoController extends Controller
 {
     protected $service;
