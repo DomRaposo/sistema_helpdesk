@@ -23,12 +23,12 @@ class RespostaRepository
 
     public function update($resposta, $data)
     {
-        return $resposta->update($data);
+        return Resposta::update($data);
     }
 
     public function delete($resposta)
     {
-        return $resposta->delete();
+        return Resposta::delete();
     }
 
 
