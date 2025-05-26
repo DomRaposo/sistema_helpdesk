@@ -17,7 +17,7 @@ class RespostaService
 
     public function index()
     {
-        // Caso a gente queira depois filtrar por chamado
+        
         return $this->repository->getAll()
             ->map(fn($r) => [
                 'id' => $r->id,
@@ -35,7 +35,7 @@ class RespostaService
 
         $data['user_id'] = $user->id;
 
-        return Resposta::create($data);
+        return $this->repository->create($data);
     }
 
     public function show($id)
