@@ -65,7 +65,15 @@ class ChamadoController extends Controller
             'data' => $chamado,
         ]);
     }
+ public function close($id)
+    {
+        $chamado = $this->service->closeChamado($id);
 
+        return response()->json([
+            'message' => 'Chamado encerrado com sucesso',
+            'data' => $chamado
+        ]);
+    }
 
     public function destroy($id): JsonResponse
     {
