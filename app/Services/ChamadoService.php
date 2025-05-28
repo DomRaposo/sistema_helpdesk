@@ -53,7 +53,16 @@ class ChamadoService
         return $this->repository->filterByStatus($status);
     }
 
+ public function closeChamado($id)
+    {
+        $chamado = $this->repository->find($id);
 
+        if (!$chamado) {
+            throw new \Exception('Chamado não encontrado');
+        }
+
+        return $this->repository->update($chamado, ['status' => 'encerrado']);
+    }
 
 
     public function store($data)
