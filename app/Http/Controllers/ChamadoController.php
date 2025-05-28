@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\ChamadoService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\JsonResponse;
-use App\Http\Requests\ChamadoRequest;
+use App\Http\Request\ChamadoRequest;
 use Illuminate\Http\Request;
 
 

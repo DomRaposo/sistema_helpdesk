@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Http\Requests\RespostaChamadoRequest;
+use App\Http\Request\RespostaChamadoRequest;
 
 
 class Resposta extends Model
