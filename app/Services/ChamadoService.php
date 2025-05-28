@@ -61,7 +61,7 @@ class ChamadoService
             throw new \Exception('Chamado não encontrado');
         }
 
-        return $this->repository->update($chamado, ['status' => 'encerrado']);
+        return $this->repository->update($chamado, ['status' => 'ENCERRADO']);
     }
 
 
