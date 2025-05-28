@@ -21,8 +21,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/{id}', [ChamadoController::class, 'show']);
         Route::put('/{id}', [ChamadoController::class, 'update']);
         Route::delete('/{id}', [ChamadoController::class, 'destroy']);
-        Route::post('//{id}/encerrar', [ChamadoController::class, 'close']);
-
+        Route::post('/{id}/encerrar', [ChamadoController::class, 'close']);
         Route::post('respostas', [RespostaController::class, 'store']);
    });
 });
