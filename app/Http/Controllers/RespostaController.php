@@ -31,7 +31,7 @@ class RespostaController extends Controller
         $resposta = $this->service->show($id);
 
         if (!$resposta) {
-            return response()->json(['message' => 'Resposta ao chamado não encontrada'], 404);
+            return response()->json(['message' => 'Call response not found'], 404);
         }
 
         return response()->json($resposta);
@@ -42,10 +42,10 @@ class RespostaController extends Controller
         $deleted = $this->service->destroy($id);
 
         if (!$deleted) {
-            return response()->json(['message' => 'Resposta ao chamado não encontrada'], 404);
+            return response()->json(['message' => 'Call response not found'], 404);
         }
 
-        return response()->json(['message' => 'Resposta deletada com sucesso']);
+        return response()->json(['message' => 'Answer deleted successfully']);
     }
 
 
