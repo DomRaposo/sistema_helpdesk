@@ -31,7 +31,6 @@ O projeto usa as seguintes tecnologias:
 - [Laravel 10+](https://laravel.com) – Framework PHP  
 - [PHP 8+](https://www.php.net/)  
 - [MySQL](https://www.mysql.com/) – Banco de dados  
-- [Bootstrap](https://getbootstrap.com/) – Estilização de páginas  
 - [Laravel Sanctum](https://laravel.com/docs/10.x/sanctum) – Autenticação via API  
 - [Composer](https://getcomposer.org/) – Gerenciador de dependências  
 
@@ -44,7 +43,7 @@ O projeto usa as seguintes tecnologias:
 - PHP 8.1+  
 - Composer  
 - MySQL  
-- Node.js (opcional para assets)  
+
 
 ### Passos:
 
