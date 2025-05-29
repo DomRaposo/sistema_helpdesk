@@ -14,15 +14,15 @@ Route::post('users', [UserController::class, 'store']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
-    Route::prefix('chamados')->group(function () {
+    Route::prefix('called')->group(function () {
         Route::get('/', [ChamadoController::class, 'index']);
         Route::get('/stats', [ChamadoController::class, 'stats']);
-        Route::post('/criar', [ChamadoController::class, 'store']);
+        Route::post('/create', [ChamadoController::class, 'store']);
         Route::get('/{id}', [ChamadoController::class, 'show']);
         Route::put('/{id}', [ChamadoController::class, 'update']);
         Route::delete('/{id}', [ChamadoController::class, 'destroy']);
-        Route::post('/{id}/encerrar', [ChamadoController::class, 'close']);
-        Route::post('respostas', [RespostaController::class, 'store']);
+        Route::post('/{id}/close', [ChamadoController::class, 'close']);
+        Route::post('response', [RespostaController::class, 'store']);
    });
 });
 
