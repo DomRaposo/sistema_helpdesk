@@ -36,7 +36,7 @@ Route::get('users', [UserController::class, 'index']);
 
 
 
-Route::get('report    ', [ChamadoController::class, 'gerarPDF']);
+Route::get('report', [ChamadoController::class, 'gerarPDF']);
 Route::get('/{status}', [ChamadoController::class, 'filter']);
 
 
