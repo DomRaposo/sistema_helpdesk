@@ -3,8 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Enums\StatusChamadoEnum;
-use App\Enums\AssuntoChamadoEnum;
+use App\Enums\StatusTicketEnum;
+use App\Enums\AssuntoTicketEnum;
 
 return new class extends Migration
 {
@@ -18,8 +18,8 @@ return new class extends Migration
             $table-> string('titulo');
             $table->text('descricao');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->enum('status', StatusChamadoEnum::values())->default(StatusChamadoEnum::ABERTO);
-            $table->enum('assunto', AssuntoChamadoEnum::values());
+            $table->enum('status', StatusTicketEnum::values())->default(StatusTicketEnum::ABERTO);
+            $table->enum('assunto', AssuntoTicketEnum::values());
             $table->date('data_abertura');
             $table->timestamps();
 

@@ -1,18 +1,18 @@
 <?php
 
 namespace App\Services;
-use App\Enums\StatusChamadoEnum;
-use App\Models\Chamado;
-use App\Repositories\ChamadoRepository;
+use App\Enums\StatusTicketEnum;
+use App\Models\Ticket;
+use App\Repositories\TicketRepository;
 use Illuminate\Support\Facades\Auth;
 
 use Carbon\Carbon;
 
-class ChamadoService
+class TicektService
 {
     protected $repository;
 
-    public function __construct(ChamadoRepository $repository)
+    public function __construct(TicketRepository $repository)
     {
         $this->repository = $repository;
     }
@@ -55,13 +55,13 @@ class ChamadoService
 
  public function closeChamado($id)
     {
-        $chamado = $this->repository->find($id);
+        $ticket = $this->repository->find($id);
 
-        if (!$chamado) {
+        if (!$ticket) {
             throw new \Exception('Chamado não encontrado');
         }
 
-        return $this->repository->update($chamado, ['status' => 'ENCERRADO']);
+        return $this->repository->update($ticket, ['status' => 'ENCERRADO']);
     }
 
 
@@ -86,36 +86,36 @@ class ChamadoService
 
     public function show($id)
     {
-        $chamado = $this->repository->find($id);
+        $ticket = $this->repository->find($id);
 
-        if (!$chamado) return null;
+        if (!$ticket) return null;
 
         return [
-            'id' => $chamado->id,
-            'titulo' => $chamado->titulo,
-            'descricao' => $chamado->descricao,
-            'status' => $chamado->status,
-            'border_color' => $this->getBorderColorByStatus($chamado->status),
+            'id' => $ticket->id,
+            'titulo' => $ticket->titulo,
+            'descricao' => $ticket->descricao,
+            'status' => $ticket->status,
+            'border_color' => $this->getBorderColorByStatus($ticket->status),
         ];
     }
 
 
     public function updateStatus($id, $status)
     {
-        $chamado = $this->repository->find($id);
+        $ticket = $this->repository->find($id);
 
-        if (!$chamado) {
+        if (!$ticket) {
             throw new \Exception('Chamado não encontrado');
         }
 
-        return $this->repository->update($chamado, ['status' => $status]);
+        return $this->repository->update($ticket, ['status' => $status]);
     }
 
 
     public function destroy($id)
     {
-        $chamado = $this->repository->find($id);
-        return $chamado ? $this->repository->delete($chamado) : false;
+        $ticket = $this->repository->find($id);
+        return $ticket ? $this->repository->delete($ticket) : false;
     }
 
 

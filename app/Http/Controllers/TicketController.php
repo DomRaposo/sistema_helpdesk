@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\ChamadoService;
+use App\Services\TicektService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\JsonResponse;
-use App\Http\Request\ChamadoRequest;
+use App\Http\Requests\TicketRequest;
 use Illuminate\Http\Request;
 
 
-class ChamadoController extends Controller
+class TicketController extends Controller
 {
     protected $service;
 
-    public function __construct(ChamadoService $service)
+    public function __construct(TicektService $service)
     {
         $this->service = $service;
     }
@@ -24,8 +24,8 @@ class ChamadoController extends Controller
     }
     public function index(): JsonResponse
     {
-        $chamados = $this->service->index();
-        return response()->json($chamados);
+        $ticket = $this->service->index();
+        return response()->json($ticket);
     }
 
     public function store(Request $request): JsonResponse
@@ -47,31 +47,31 @@ class ChamadoController extends Controller
     {
         $chamado = $this->service->show($id);
 
-        if (!$chamado) {
+        if (!$ticket) {
             return response()->json(['message' => 'Chamado não encontrado'], 404);
         }
 
-        return response()->json($chamado);
+        return response()->json($ticket);
     }
 
     public function updateStatus($id, Request $request)
     {
         $status = $request->input('status');
 
-        $chamado = $this->service->updateStatus($id, $status);
+        $ticket = $this->service->updateStatus($id, $status);
 
         return response()->json([
             'message' => 'Status atualizado com sucesso',
-            'data' => $chamado,
+            'data' => $ticket,
         ]);
     }
  public function close($id)
     {
-        $chamado = $this->service->closeChamado($id);
+        $ticket = $this->service->closeChamado($id);
 
         return response()->json([
             'message' => 'Chamado encerrado com sucesso',
-            'data' => $chamado
+            'data' => $ticket
         ]);
     }
 

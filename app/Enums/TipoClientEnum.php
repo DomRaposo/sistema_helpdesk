@@ -3,7 +3,7 @@
 
 namespace App\Enums;
 
-class TipoClienteEnum
+class TipoClientEnum
 {
     public const CLIENTE = 'CLIENTE';
     public const ATENDENTE = 'ATENDENTE';

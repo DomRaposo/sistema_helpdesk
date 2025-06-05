@@ -5,10 +5,10 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Enums\StatusChamadoEnum;
-use App\Enums\AssuntoChamadoEnum;
+use App\Enums\StatusTicketEnum;
+use App\Enums\AssuntoTicketEnum;
 
-class ChamadoRequest extends FormRequest
+class TicketRequest extends FormRequest
 {
 public function authorize()
 {
@@ -20,8 +20,8 @@ public function rules()
 return [
 'titulo' => 'required|string|max:255',
 'descricao' => 'required|string',
-'assunto' => 'required|in:' . implode(',', AssuntoChamadoEnum::values()),
-'status' => 'required|in:' . implode(',', StatusChamadoEnum::values()),
+'assunto' => 'required|in:' . implode(',', AssuntoTicketEnum::values()),
+'status' => 'required|in:' . implode(',', StatusTicketEnum::values()),
 'user_id' => 'required|int|exists:users,id',
 'data_abertura' => 'required|date',
 ];

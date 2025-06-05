@@ -1,10 +1,10 @@
 <?php
 namespace App\Enums;
 
-enum StatusChamadoEnum: string
+enum StatusTicketEnum: string
 {
     case ABERTO = 'ABERTO';
-    case EM_ATENDIMENTO = 'EM_ATENDIMENTO';
+    case EM_ATENDIMENTO = 'EM_ANADAMENTO';
     case ENCERRADO = 'ENCERRADO';
 
     public static function values(): array
