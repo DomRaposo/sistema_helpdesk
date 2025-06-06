@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\TicektService;
+use App\Services\ChamadoService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\JsonResponse;
-use App\Http\Requests\TicketRequest;
+use App\Http\Requests\ChamadoRequest;
 use Illuminate\Http\Request;
 
 
-class TicketController extends Controller
+class ChamadoController extends Controller
 {
     protected $service;
 
-    public function __construct(TicektService $service)
+    public function __construct(ChamadoService $service)
     {
         $this->service = $service;
     }
@@ -24,8 +24,8 @@ class TicketController extends Controller
     }
     public function index(): JsonResponse
     {
-        $ticket = $this->service->index();
-        return response()->json($ticket);
+        $chamados = $this->service->index();
+        return response()->json($chamados);
     }
 
     public function store(Request $request): JsonResponse
@@ -47,33 +47,25 @@ class TicketController extends Controller
     {
         $chamado = $this->service->show($id);
 
-        if (!$ticket) {
+        if (!$chamado) {
             return response()->json(['message' => 'Chamado não encontrado'], 404);
         }
 
-        return response()->json($ticket);
+        return response()->json($chamado);
     }
 
     public function updateStatus($id, Request $request)
     {
         $status = $request->input('status');
 
-        $ticket = $this->service->updateStatus($id, $status);
+        $chamado = $this->service->updateStatus($id, $status);
 
         return response()->json([
             'message' => 'Status atualizado com sucesso',
-            'data' => $ticket,
+            'data' => $chamado,
         ]);
     }
- public function close($id)
-    {
-        $ticket = $this->service->closeChamado($id);
 
-        return response()->json([
-            'message' => 'Chamado encerrado com sucesso',
-            'data' => $ticket
-        ]);
-    }
 
     public function destroy($id): JsonResponse
     {

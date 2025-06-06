@@ -4,10 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Enums\StatusTicketEnum;
-use App\Enums\AssuntoTicketEnum;
+use App\Enums\StatusChamadoEnum;
+use App\Enums\AssuntoChamadoEnum;
 
-class Ticket extends Model
+class Chamado extends Model
 {
     use HasFactory;
 
@@ -23,8 +23,8 @@ class Ticket extends Model
     ];
 
     protected $casts = [
-        'status' => StatusTicketEnum::class,
-        'assunto' => AssuntoTicketEnum::class,
+        'status' => StatusChamadoEnum::class,
+        'assunto' => AssuntoChamadoEnum::class,
     ];
 
 
