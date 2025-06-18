@@ -1,158 +1,49 @@
-<h1 align="center">  
-  <img src="https://via.placeholder.com/300x300.png?text=Sistema+Helpdesk" style="margin-top: 10px; height: 300px; width: 300px">
-  <p>Sistema Helpdesk</p>
-</h1>
+# Sistema Helpdesk  
+## _Gerencie chamados de suporte de forma simples e eficiente_
 
-<h1> Chamados 🛠️💬 </h1>
+[![Laravel](https://img.shields.io/badge/Laravel-Framework-red)](https://laravel.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Status: Em desenvolvimento 🚧
+O **Sistema Helpdesk** é uma aplicação web desenvolvida em Laravel com autenticação, controle de usuários e gerenciamento de chamados técnicos. Ideal para empresas que precisam organizar a comunicação entre suporte e clientes.
 
->
-+ **Descrição**:  
-  Sistema web para gerenciamento de chamados técnicos com autenticação e controle de status.  
-  Estruturado em camadas (Controller, Service, Repository).  
-  Autenticação via Laravel Sanctum.
->
-
-### Campos da entidade de chamado:
-- id  
-- assunto  
-- mensagem  
-- status (enum)  
-- user_id  
-- created_at / updated_at
-
-### Para criar um chamado:
-- assunto  
-- mensagem
-
-### Exemplo: Criar um chamado (POST)
-```bash
-curl --location --request POST 'http://localhost:8000/api/chamados' --header 'Authorization: Bearer {TOKEN}' --header 'Content-Type: application/json' --data-raw '{
-  "assunto": "SUPORTE_TECNICO",
-  "mensagem": "Estou com dificuldade para acessar o sistema"
-}'
-```
-
-### Exemplo: Atualizar status do chamado (PUT)
-```bash
-curl --location --request PUT 'http://localhost:8000/api/chamados/5' --header 'Authorization: Bearer {TOKEN}' --header 'Content-Type: application/json' --data-raw '{
-  "status": "CONCLUIDO"
-}'
-```
-
-### Exemplo: Listar todos os chamados (GET)
-```bash
-curl --location --request GET 'http://localhost:8000/api/chamados' --header 'Authorization: Bearer {TOKEN}'
-```
-
-### Exemplo: Cancelar chamado (DELETE)
-```bash
-curl --location --request DELETE 'http://localhost:8000/api/chamados/5' --header 'Authorization: Bearer {TOKEN}'
-```
+- Abertura e acompanhamento de chamados  
+- Respostas internas com controle de status  
+- Sistema baseado em camadas (Controller, Service, Repository)  
+- Suporte a autenticação com Laravel Sanctum  
 
 ---
 
-<h1> Respostas 📩 </h1>
+## ✨ Funcionalidades
 
-Funcionalidade que permite adicionar respostas internas a chamados.
-
-| Método | URL                                | Descrição                             |
-|--------|------------------------------------|----------------------------------------|
-|GET     |/api/chamados/{id}/respostas        |Lista as respostas do chamado           |
-|POST    |/api/chamados/{id}/respostas        |Adiciona uma nova resposta ao chamado   |
-
-### Exemplo: Listar respostas
-```bash
-curl --location --request GET 'http://localhost:8000/api/chamados/5/respostas' --header 'Authorization: Bearer {TOKEN}'
-```
-
-### Exemplo: Adicionar resposta
-```bash
-curl --location --request POST 'http://localhost:8000/api/chamados/5/respostas' --header 'Authorization: Bearer {TOKEN}' --data-raw '{
-  "mensagem": "Problema resolvido, sistema acessível."
-}'
-```
+- Abertura de chamados por usuários autenticados  
+- Resposta a chamados com histórico  
+- Enum para status e assuntos  
+- Filtros e contadores de chamados por status  
+- Cadastro e listagem de usuários  
+- Integração com autenticação via Sanctum  
 
 ---
 
-<h1> Dashboard 📊 </h1>
+## 🛠️ Tecnologias
 
-Painel com contadores de chamados por status:
+O projeto usa as seguintes tecnologias:
 
-- ABERTO  
-- RESPONDIDO  
-- CONCLUIDO  
-- CANCELADO
-
-```json
-{
-  "ABERTO": 3,
-  "RESPONDIDO": 5,
-  "CONCLUIDO": 7,
-  "CANCELADO": 1
-}
-```
-
-### 📷 Exemplo do Dashboard com contadores  
-![Dashboard](https://via.placeholder.com/800x400.png?text=Dashboard+Contadores)
+- [Laravel 10+](https://laravel.com) – Framework PHP  
+- [PHP 8+](https://www.php.net/)  
+- [MySQL](https://www.mysql.com/) – Banco de dados  
+- [Laravel Sanctum](https://laravel.com/docs/10.x/sanctum) – Autenticação via API  
+- [Composer](https://getcomposer.org/) – Gerenciador de dependências  
 
 ---
 
-<h1> Autenticação 🔐 </h1>
-
-Autenticação via Laravel Sanctum.
-
-| Método | URL               | Descrição           |
-|--------|-------------------|---------------------|
-|POST    |/api/login         |Login do usuário     |
-|POST    |/api/register      |Registro de usuário  |
-|POST    |/api/logout        |Logout (revoga token)|
-
-### Exemplo: Login
-```bash
-curl --location --request POST 'http://localhost:8000/api/login' --data-raw '{
-  "email": "usuario@email.com",
-  "password": "12345678"
-}'
-```
-
----
-
-<h1> Prints do Sistema 🖼️ </h1>
-
-> Substitua os links de imagem abaixo pelos prints reais do seu projeto.
-
-### Tela de Login
-![Tela de Login](https://via.placeholder.com/800x400.png?text=Login)
-
-### Tela de Abertura de Chamado
-![Novo Chamado](https://via.placeholder.com/800x400.png?text=Abrir+Chamado)
-
-### Tela de Listagem de Chamados
-![Lista de Chamados](https://via.placeholder.com/800x400.png?text=Chamados)
-
-### Tela de Respostas
-![Respostas](https://via.placeholder.com/800x400.png?text=Respostas)
-
----
-
-<h1> Tecnologias Utilizadas 🔧 </h1>
-
-- [Laravel 10+](https://laravel.com/)  
-- [PHP 8.1+](https://www.php.net/)  
-- [MySQL](https://www.mysql.com/)  
-- [Composer](https://getcomposer.org/)  
-- [Laravel Sanctum](https://laravel.com/docs/10.x/sanctum)
-
----
-
-<h1> Instalação Local 💻 </h1>
+## 🚀 Instalação
 
 ### Pré-requisitos:
+
 - PHP 8.1+  
 - Composer  
-- MySQL
+- MySQL  
+
 
 ### Passos:
 
@@ -162,12 +53,3 @@ cd sistema_helpdesk
 composer install
 cp .env.example .env
 php artisan key:generate
-php artisan migrate
-php artisan serve
-```
-
----
-
-<h1> Licença 📄 </h1>
-
-Este projeto está licenciado sob a licença [MIT](https://opensource.org/licenses/MIT).
