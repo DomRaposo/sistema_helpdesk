@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Http\Requests\RespostaChamadoRequest;
+use App\Http\Request\RespostaChamadoRequest;
 
 
 class Resposta extends Model
@@ -27,8 +27,8 @@ class Resposta extends Model
     }
 
 
-    public function user()
+    public function usuario()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(\App\Models\User::class, 'user_id');
     }
 }

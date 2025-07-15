@@ -21,9 +21,16 @@ class AuthController extends Controller
             return response()->json(['message' => 'Credenciais inválidas'], 401);
         }
 
+        if ($user->status === 'inativo') {
+            return response()->json(['message' => 'Usuário inativo. Contate o administrador.'], 403);
+        }
+
         $token = $user->createToken('token')->plainTextToken;
 
-        return response()->json(['token' => $token], 200);
+        return response()->json([
+            'token' => $token,
+            'user' => $user
+        ], 200);
     }
 
     public function logout(Request $request)

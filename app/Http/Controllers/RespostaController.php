@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\RespostaChamadoRequest;
+use App\Http\Request\RespostaChamadoRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Services\RespostaService;
@@ -28,7 +28,7 @@ class RespostaController extends Controller
 
     public function show($id): JsonResponse
     {
-        $resposta = $this->service->show($id);
+        $resposta = $this->respostaService->show($id);
 
         if (!$resposta) {
             return response()->json(['message' => 'Call response not found'], 404);
@@ -39,13 +39,34 @@ class RespostaController extends Controller
 
     public function destroy($id): JsonResponse
     {
-        $deleted = $this->service->destroy($id);
+        $deleted = $this->respostaService->destroy($id);
 
         if (!$deleted) {
             return response()->json(['message' => 'Call response not found'], 404);
         }
 
         return response()->json(['message' => 'Answer deleted successfully']);
+    }
+
+    public function getByChamado($id)
+    {
+        $respostas = \App\Models\Resposta::where('chamado_id', $id)
+            ->with('usuario')
+            ->orderBy('created_at')
+            ->get()
+            ->map(function($r) {
+                return [
+                    'id' => $r->id,
+                    'chamado_id' => $r->chamado_id,
+                    'mensagem' => $r->mensagem,
+                    'user_id' => $r->user_id,
+                    'usuario_nome' => $r->usuario->name ?? null,
+                    'created_at' => $r->created_at,
+                    'updated_at' => $r->updated_at,
+                ];
+            });
+
+        return response()->json($respostas);
     }
 
 
