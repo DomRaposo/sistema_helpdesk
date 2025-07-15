@@ -14,7 +14,7 @@ Route::post('users', [UserController::class, 'store']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
-    Route::prefix('called')->group(function () {
+    Route::prefix('tickets')->group(function () {
         Route::get('/', [ChamadoController::class, 'index']);
         Route::get('/stats', [ChamadoController::class, 'stats']);
         Route::post('/create', [ChamadoController::class, 'store']);
